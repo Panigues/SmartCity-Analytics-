@@ -1,0 +1,57 @@
+name: smartcity
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: smartcity-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    environment:
+      CLUSTER_NAME: smartcity
+    env_file: ./hadoop/hadoop.env
+    ports:
+      - "9870:9870"
+      - "9000:9000"
+    volumes:
+      - hdfs_name:/hadoop/dfs/name
+      - ./hadoop:/scripts
+      - ./data:/data
+
+  datanode1:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode1
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870"
+    env_file: ./hadoop/hadoop.env
+    volumes:
+      - hdfs_data1:/hadoop/dfs/data
+    depends_on:
+      - namenode
+
+  datanode2:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode2
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870"
+    env_file: ./hadoop/hadoop.env
+    volumes:
+      - hdfs_data2:/hadoop/dfs/data
+    depends_on:
+      - namenode    
+
+volumes:
+  pg_data:
+  hdfs_name:
+  hdfs_data1:
+  hdfs_data2:
