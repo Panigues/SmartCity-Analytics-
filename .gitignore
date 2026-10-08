@@ -29,3 +29,18 @@ obj/
 *.bak
 *.log
 
+
+
+# Contraseñas locales
+.env
+
+# Datos (pesados, se descargan o generan)
+data/raw/*
+data/generated/*
+!data/raw/.gitkeep
+!data/generated/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+.venv/
