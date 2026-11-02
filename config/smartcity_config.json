@@ -1,0 +1,400 @@
+{
+  "version": "0.1",
+  "ciudad": {
+    "id_ciudad": "C01",
+    "nombre": "SmartCity",
+    "referencia_geografica": "Aarhus, DK (coordenadas reales de CityPulse)",
+    "centro": {
+      "lat": 56.1572,
+      "lon": 10.2107
+    },
+    "zona_horaria": "UTC"
+  },
+  "simulacion": {
+    "fecha_inicio": "2024-01-01T00:00:00",
+    "fecha_fin": "2025-12-31T23:00:00",
+    "resolucion": "1h",
+    "semilla": 42,
+    "notas": "2 años para permitir la comparación histórica entre años exigida en Spark (consulta 9)."
+  },
+  "esquema_largo": [
+    "timestamp",
+    "zone_id",
+    "domain",
+    "sensor_id",
+    "variable",
+    "value",
+    "unit"
+  ],
+  "zonas": [
+    {
+      "zone_id": "Z01",
+      "nombre": "Centro",
+      "distrito": "Distrito Central",
+      "perfil": "mixto_alta_densidad",
+      "asignacion_geo": {
+        "tipo": "radio",
+        "radio_km": 1.5
+      },
+      "hogares": 8000,
+      "factores": {
+        "energia": 1.4,
+        "trafico": 1.5,
+        "contaminacion": 1.4,
+        "ruido": 1.5,
+        "peatones": 1.6
+      },
+      "sensores": {
+        "energia": 15,
+        "calidad_aire": 6,
+        "clima": 2,
+        "ruido": 5,
+        "trafico": 15,
+        "estacionamiento": 4
+      }
+    },
+    {
+      "zone_id": "Z02",
+      "nombre": "Norte",
+      "distrito": "Distrito Norte",
+      "perfil": "residencial_media_densidad",
+      "asignacion_geo": {
+        "tipo": "sector",
+        "rumbo_desde": 315,
+        "rumbo_hasta": 45
+      },
+      "hogares": 6000,
+      "factores": {
+        "energia": 1.0,
+        "trafico": 0.9,
+        "contaminacion": 0.8,
+        "ruido": 0.7,
+        "peatones": 0.8
+      },
+      "sensores": {
+        "energia": 12,
+        "calidad_aire": 4,
+        "clima": 1,
+        "ruido": 2,
+        "trafico": 8,
+        "estacionamiento": 1
+      }
+    },
+    {
+      "zone_id": "Z03",
+      "nombre": "Sur",
+      "distrito": "Distrito Sur",
+      "perfil": "industrial",
+      "asignacion_geo": {
+        "tipo": "sector",
+        "rumbo_desde": 135,
+        "rumbo_hasta": 225
+      },
+      "hogares": 1500,
+      "factores": {
+        "energia": 1.8,
+        "trafico": 1.1,
+        "contaminacion": 1.6,
+        "ruido": 1.2,
+        "peatones": 0.4
+      },
+      "sensores": {
+        "energia": 10,
+        "calidad_aire": 6,
+        "clima": 1,
+        "ruido": 3,
+        "trafico": 10,
+        "estacionamiento": 1
+      }
+    },
+    {
+      "zone_id": "Z04",
+      "nombre": "Este",
+      "distrito": "Distrito Este",
+      "perfil": "residencial_baja_densidad",
+      "asignacion_geo": {
+        "tipo": "sector",
+        "rumbo_desde": 45,
+        "rumbo_hasta": 135
+      },
+      "hogares": 2500,
+      "factores": {
+        "energia": 0.7,
+        "trafico": 0.5,
+        "contaminacion": 0.6,
+        "ruido": 0.5,
+        "peatones": 0.5
+      },
+      "sensores": {
+        "energia": 8,
+        "calidad_aire": 3,
+        "clima": 1,
+        "ruido": 2,
+        "trafico": 5,
+        "estacionamiento": 1
+      }
+    },
+    {
+      "zone_id": "Z05",
+      "nombre": "Oeste",
+      "distrito": "Distrito Oeste",
+      "perfil": "comercial",
+      "asignacion_geo": {
+        "tipo": "sector",
+        "rumbo_desde": 225,
+        "rumbo_hasta": 315
+      },
+      "hogares": 2000,
+      "factores": {
+        "energia": 1.3,
+        "trafico": 1.3,
+        "contaminacion": 1.2,
+        "ruido": 1.3,
+        "peatones": 1.4
+      },
+      "sensores": {
+        "energia": 15,
+        "calidad_aire": 6,
+        "clima": 1,
+        "ruido": 4,
+        "trafico": 12,
+        "estacionamiento": 4
+      }
+    }
+  ],
+  "tipos_sensor": {
+    "energia": {
+      "id_categoria": "CAT-ENE",
+      "fuente": "UCI Household Power (perfiles derivados + escalado)",
+      "variables": {
+        "consumo_kwh": "kWh",
+        "demanda_kw": "kW",
+        "voltaje": "V"
+      }
+    },
+    "calidad_aire": {
+      "id_categoria": "CAT-AMB",
+      "fuente": "OpenAQ (perfiles + escalado por tráfico)",
+      "variables": {
+        "pm25": "µg/m³",
+        "pm10": "µg/m³",
+        "no2": "µg/m³",
+        "co": "mg/m³",
+        "co2": "ppm"
+      },
+      "limites_alerta": {
+        "pm25": 35.0,
+        "pm10": 50.0,
+        "no2": 200.0,
+        "co": 10.0,
+        "co2": 1000.0
+      }
+    },
+    "clima": {
+      "id_categoria": "CAT-AMB",
+      "fuente": "OpenAQ (meteorología asociada) o generador sintético",
+      "variables": {
+        "temperatura": "°C",
+        "humedad": "%",
+        "presion": "hPa",
+        "viento": "m/s"
+      }
+    },
+    "ruido": {
+      "id_categoria": "CAT-AMB",
+      "fuente": "Sintético, correlacionado con tráfico",
+      "variables": {
+        "nivel_db": "dB(A)"
+      },
+      "limites_alerta": {
+        "nivel_db": 70.0
+      }
+    },
+    "trafico": {
+      "id_categoria": "CAT-MOV",
+      "fuente": "CityPulse Aarhus (sensores reales asignados a zonas)",
+      "variables": {
+        "vehiculos": "veh/h",
+        "velocidad_promedio": "km/h",
+        "tiempo_recorrido": "s"
+      },
+      "limites_alerta": {
+        "velocidad_promedio_min": 15.0
+      }
+    },
+    "estacionamiento": {
+      "id_categoria": "CAT-EST",
+      "fuente": "CityPulse Aarhus Parking (escalado)",
+      "variables": {
+        "ocupacion_pct": "%"
+      },
+      "limites_alerta": {
+        "ocupacion_pct": 95.0
+      }
+    }
+  },
+  "categorias": [
+    {
+      "id_categoria": "CAT-ENE",
+      "nombre_categoria": "Energía"
+    },
+    {
+      "id_categoria": "CAT-AMB",
+      "nombre_categoria": "Ambiente"
+    },
+    {
+      "id_categoria": "CAT-MOV",
+      "nombre_categoria": "Movilidad"
+    },
+    {
+      "id_categoria": "CAT-EST",
+      "nombre_categoria": "Espacios públicos"
+    },
+    {
+      "id_categoria": "CAT-TRP",
+      "nombre_categoria": "Transporte público"
+    }
+  ],
+  "organismos": [
+    {
+      "id_organismo": "ORG01",
+      "nombre": "Dirección de Energía Municipal",
+      "responsable": "Ing. Laura Mora Jiménez",
+      "categorias": [
+        "CAT-ENE"
+      ]
+    },
+    {
+      "id_organismo": "ORG02",
+      "nombre": "Departamento de Gestión Ambiental",
+      "responsable": "MSc. Carlos Vargas Solís",
+      "categorias": [
+        "CAT-AMB"
+      ]
+    },
+    {
+      "id_organismo": "ORG03",
+      "nombre": "Dirección de Tránsito y Movilidad",
+      "responsable": "Ing. Daniela Rojas Castro",
+      "categorias": [
+        "CAT-MOV",
+        "CAT-TRP"
+      ]
+    },
+    {
+      "id_organismo": "ORG04",
+      "nombre": "Administración de Espacios Públicos",
+      "responsable": "Lic. Marco Chaves Araya",
+      "categorias": [
+        "CAT-EST"
+      ]
+    }
+  ],
+  "perfiles_energia": {
+    "residencial": {
+      "origen": "uci_derivado",
+      "notas": "Curva horaria y semanal calculada del dataset UCI."
+    },
+    "comercial": {
+      "origen": "sintetico",
+      "horario": [
+        0.3,
+        0.3,
+        0.3,
+        0.3,
+        0.3,
+        0.35,
+        0.5,
+        0.7,
+        0.9,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.95,
+        0.9,
+        0.8,
+        0.6,
+        0.4,
+        0.35,
+        0.3
+      ],
+      "dia_semana": {
+        "lun-vie": 1.0,
+        "sab": 0.9,
+        "dom": 0.5
+      }
+    },
+    "industrial": {
+      "origen": "sintetico",
+      "horario": [
+        0.7,
+        0.7,
+        0.7,
+        0.7,
+        0.7,
+        0.75,
+        0.9,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.95,
+        1.0,
+        1.0,
+        1.0,
+        0.95,
+        0.9,
+        0.85,
+        0.8,
+        0.75,
+        0.75,
+        0.7,
+        0.7
+      ],
+      "dia_semana": {
+        "lun-vie": 1.0,
+        "sab": 0.6,
+        "dom": 0.4
+      }
+    },
+    "mezclas": {
+      "mixto_alta_densidad": {
+        "residencial": 0.5,
+        "comercial": 0.5
+      },
+      "residencial_media_densidad": {
+        "residencial": 0.9,
+        "comercial": 0.1
+      },
+      "residencial_baja_densidad": {
+        "residencial": 1.0
+      },
+      "industrial": {
+        "industrial": 0.85,
+        "residencial": 0.15
+      },
+      "comercial": {
+        "comercial": 0.8,
+        "residencial": 0.2
+      }
+    }
+  },
+  "correlaciones": {
+    "trafico_a_no2": 0.6,
+    "trafico_a_ruido": 0.7,
+    "temperatura_a_consumo": 0.4,
+    "notas": "Coeficientes objetivo para que el análisis correlacional en Spark encuentre relaciones reales."
+  },
+  "ruido_simulacion": {
+    "variacion_entre_sensores_pct": 10,
+    "probabilidad_dato_faltante": 0.005,
+    "probabilidad_anomalia": 0.001,
+    "sensores_inactivos_pct": 5
+  }
+}
