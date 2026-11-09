@@ -60,8 +60,8 @@
       "perfil": "residencial_media_densidad",
       "asignacion_geo": {
         "tipo": "sector",
-        "rumbo_desde": 315,
-        "rumbo_hasta": 45
+        "rumbo_desde": 285,
+        "rumbo_hasta": 345
       },
       "hogares": 6000,
       "factores": {
@@ -87,7 +87,7 @@
       "perfil": "industrial",
       "asignacion_geo": {
         "tipo": "sector",
-        "rumbo_desde": 135,
+        "rumbo_desde": 170,
         "rumbo_hasta": 225
       },
       "hogares": 1500,
@@ -114,8 +114,8 @@
       "perfil": "residencial_baja_densidad",
       "asignacion_geo": {
         "tipo": "sector",
-        "rumbo_desde": 45,
-        "rumbo_hasta": 135
+        "rumbo_desde": 345,
+        "rumbo_hasta": 60
       },
       "hogares": 2500,
       "factores": {
@@ -142,7 +142,7 @@
       "asignacion_geo": {
         "tipo": "sector",
         "rumbo_desde": 225,
-        "rumbo_hasta": 315
+        "rumbo_hasta": 285
       },
       "hogares": 2000,
       "factores": {
