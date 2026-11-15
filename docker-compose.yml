@@ -48,7 +48,30 @@ services:
     volumes:
       - hdfs_data2:/hadoop/dfs/data
     depends_on:
-      - namenode    
+      - namenode   
+
+
+  resourcemanager:
+    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
+    container_name: resourcemanager
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode1:9864 datanode2:9864"
+    env_file: ./hadoop/hadoop.env
+    ports:
+      - "8088:8088"
+    depends_on:
+      - namenode
+
+  nodemanager:
+    image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
+    container_name: nodemanager
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode1:9864 resourcemanager:8088"
+    env_file: ./hadoop/hadoop.env
+    volumes:
+      - ./hadoop:/scripts
+    depends_on:
+      - resourcemanager       
 
 volumes:
   pg_data:
