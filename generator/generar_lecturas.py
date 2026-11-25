@@ -112,7 +112,7 @@ def gen_energia(ctx, s, rng):
     mezcla = sum(peso * curvas[k] for k, peso in cfg["mezclas"][z["perfil"]].items())
 
     hogares = z["hogares"] / z["sensores"]["energia"]
-    estacional = p["ene_mes"].reindex(mes).values
+    estacional = p["ene_mes"].reindex(mes).fillna(1.0).values
     efecto_temp = 1 - ctx["cfg"]["correlaciones"]["temperatura_a_consumo"] * 0.05 * ctx["clima"]["temp_anomalia"]
     consumo = (ctx["kw_hogar"] * hogares * z["factores"]["energia"] * mezcla * estacional
                * efecto_temp * ctx["dia_ene"][s["zona"]][ctx["dia"]] * s["mult"]
@@ -132,7 +132,10 @@ def gen_calidad_aire(ctx, s, rng):
     dispersion = np.clip(1.25 - 0.04 * ctx["clima"]["viento"], 0.6, 1.25)
 
     def base(par):
-        return p["aire"][par][dow, h] * p["aire_mes"][par].reindex(mes).values * f * dispersion
+        # Meses sin datos en la estación real (ej. PM10 en nov-dic, CO en abr-oct):
+        # se usa el factor neutro 1.0 (promedio anual) en lugar de dejar NaN
+        mensual = p["aire_mes"][par].reindex(mes).fillna(1.0).values
+        return p["aire"][par][dow, h] * mensual * f * dispersion
 
     pm10 = base("pm10") * rng.lognormal(0, 0.30, n)
     pm10[ctx["anio_nuevo"]] *= rng.uniform(6, 12)          # fuegos artificiales 1 de enero

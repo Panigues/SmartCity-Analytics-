@@ -71,7 +71,21 @@ services:
     volumes:
       - ./hadoop:/scripts
     depends_on:
-      - resourcemanager       
+      - resourcemanager
+
+  spark:
+    image: apache/spark:3.5.3-scala2.12-java17-python3-ubuntu
+    container_name: spark
+    user: root
+    command: ["sleep", "infinity"]
+    env_file: .env
+    ports:
+      - "4040:4040"
+    volumes:
+      - ./spark:/opt/spark-apps
+    depends_on:
+      - namenode
+      - postgres             
 
 volumes:
   pg_data:
