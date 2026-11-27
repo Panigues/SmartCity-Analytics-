@@ -85,10 +85,22 @@ services:
       - ./spark:/opt/spark-apps
     depends_on:
       - namenode
-      - postgres             
+      - postgres  
+
+  mongodb:
+    image: mongo:7
+    container_name: smartcity-mongo
+    profiles: ["mongo"]
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ./mongodb:/scripts
+      - ./data:/datos           
 
 volumes:
   pg_data:
   hdfs_name:
   hdfs_data1:
   hdfs_data2:
+  mongo_data:
